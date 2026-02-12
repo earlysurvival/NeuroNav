@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Camera, Upload, CheckCircle2, Circle, Loader2, RefreshCw } from 'lucide-react';
 import { analyzeImageForBreakdown } from '../services/geminiService';
@@ -33,8 +34,9 @@ const TaskBreakdown: React.FC = () => {
       const result = await analyzeImageForBreakdown(base64Data, mimeType);
       setIntroText(result.content);
       setWhyWireText(result.whyWire);
-      if (result.data?.actions) {
-        setActions(result.data.actions);
+      // Fixed: result.actions directly contains the micro-actions array
+      if (result.actions) {
+        setActions(result.actions);
       }
     } catch (error) {
       console.error(error);

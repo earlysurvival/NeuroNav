@@ -1,26 +1,40 @@
+
 export enum AppMode {
   DASHBOARD = 'DASHBOARD',
-  TASK_BREAKDOWN = 'TASK_BREAKDOWN',
-  IMPULSE_GUARD = 'IMPULSE_GUARD',
-  BRAIN_DUMP = 'BRAIN_DUMP',
-  BODY_DOUBLE = 'BODY_DOUBLE',
-  AI_FRIEND = 'AI_FRIEND',
+  VISION = 'VISION',
+  PLANNER = 'PLANNER',
+  COACH = 'COACH',
+  IMPULSE = 'IMPULSE',
   MINDFULNESS = 'MINDFULNESS',
-  REWARD = 'REWARD',
-  TASK_BOARD = 'TASK_BOARD',
-  ABOUT = 'ABOUT',
+  REFLECTION = 'REFLECTION',
   DEVELOPER = 'DEVELOPER'
 }
 
-export type AppTheme = 'vapor' | 'neon' | 'swiss' | 'executive';
+export type ThemeType = 'zen' | 'neon' | 'swiss' | 'monarch' | 'vapor' | 'executive';
+export type AppTheme = ThemeType;
 
 export interface Task {
   id: string;
   title: string;
-  date?: string;
-  time?: string;
   completed: boolean;
-  priority: 'High' | 'Medium' | 'Low';
+  priorityFactor?: 'Interest' | 'Novelty' | 'Challenge' | 'Urgency' | 'Passion';
+  priority?: 'High' | 'Medium' | 'Low';
+  estimatedTime?: string;
+  date?: string;
+}
+
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'model';
+  text: string;
+}
+
+export interface ReflectionResponse {
+  bigWin: string;
+  neuralPivot: string;
+  successQuote: string;
+  biology: string;
+  strategy: string;
 }
 
 export interface MicroAction {
@@ -29,25 +43,20 @@ export interface MicroAction {
   isCompleted: boolean;
 }
 
+export interface ActionPlan {
+  content: string;
+  whyWire: string;
+  actions: MicroAction[];
+}
+
 export interface BrainDumpTask {
-  id: string;
   task: string;
   priority: 'High' | 'Medium' | 'Low';
-  dopamine: number; // 1-10 scale
   timeEstimate: string;
+  dopamine: number;
 }
 
-export interface NeuroResponse {
-  content: string; // The main formatted response
-  whyWire: string; // The scientific fact
-  structuredData?: any; // Optional parsed data for charts/lists
-}
-
-export interface ChatMessage {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-  type: 'text' | 'breakdown' | 'impulse' | 'braindump';
-  data?: any;
-  whyWire?: string;
+export interface BrainDumpResult {
+  whyWire: string;
+  tasks: BrainDumpTask[];
 }
