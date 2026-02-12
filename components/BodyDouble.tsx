@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Users, Play, Pause, Square, MessageSquareQuote } from 'lucide-react';
+import { Users, Play, Pause, Square, MessageSquareQuote, Volume2, VolumeX } from 'lucide-react';
 import { getBodyDoubleCheckin } from '../services/geminiService';
 import WhyWire from './WhyWire';
 
@@ -8,8 +8,12 @@ const BodyDouble: React.FC = () => {
   const [seconds, setSeconds] = useState(0);
   const [checkInMessage, setCheckInMessage] = useState<string>("Ready to start? I'm right here with you.");
   const [whyWire, setWhyWire] = useState<string>("");
+  const [soundEnabled, setSoundEnabled] = useState(true);
   
   const intervalRef = useRef<number | null>(null);
+
+  // Audio Context Ref
+  const audioCtxRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
     if (isActive) {
@@ -31,7 +35,37 @@ const BodyDouble: React.FC = () => {
     }
   }, [seconds]);
 
+  const playGentleChime = () => {
+    if (!soundEnabled) return;
+    
+    // Initialize Audio Context on first interaction if needed, or reuse
+    if (!audioCtxRef.current) {
+        audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+    }
+    const ctx = audioCtxRef.current;
+
+    // Create a gentle sine wave tone
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
+    // Soft "ping" sound
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+    oscillator.frequency.exponentialRampToValueAtTime(261.63, ctx.currentTime + 1.5); // Drop to C4
+
+    // Fade out volume
+    gainNode.gain.setValueAtTime(0.05, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.5);
+
+    oscillator.start();
+    oscillator.stop(ctx.currentTime + 1.5);
+  };
+
   const triggerCheckIn = async (mins: number) => {
+    playGentleChime();
     const data = await getBodyDoubleCheckin(mins);
     if (data.content) setCheckInMessage(data.content);
     if (data.whyWire) setWhyWire(data.whyWire);
@@ -43,7 +77,14 @@ const BodyDouble: React.FC = () => {
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
-  const toggleTimer = () => setIsActive(!isActive);
+  const toggleTimer = () => {
+      // Ensure AudioContext is resumed/started on user gesture
+      if (soundEnabled && !audioCtxRef.current) {
+         audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      setIsActive(!isActive);
+  };
+
   const stopTimer = () => {
     setIsActive(false);
     setSeconds(0);
@@ -59,6 +100,15 @@ const BodyDouble: React.FC = () => {
       </div>
 
       <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-8 flex flex-col items-center space-y-8 relative overflow-hidden border border-gray-100 dark:border-slate-700 transition-colors">
+         {/* Sound Toggle */}
+         <button 
+            onClick={() => setSoundEnabled(!soundEnabled)}
+            className="absolute top-4 right-4 p-2 text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+            title={soundEnabled ? "Mute Check-in Chime" : "Enable Check-in Chime"}
+         >
+            {soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+         </button>
+
          <div className={`absolute top-0 left-0 w-full h-2 ${isActive ? 'bg-green-500 animate-pulse' : 'bg-gray-200 dark:bg-slate-700'}`}></div>
          
          <div className="relative">

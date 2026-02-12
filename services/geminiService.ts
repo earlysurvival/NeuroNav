@@ -162,4 +162,41 @@ export const getBodyDoubleCheckin = async (elapsedMinutes: number) => {
         console.error("Check-in error", error);
         return { content: "You got this! Keep going.", whyWire: "Shared presence reduces task anxiety." };
     }
-}
+};
+
+export const chatWithFriend = async (history: any[], userMessage: string) => {
+  const ai = getAiClient();
+  const prompt = `
+    You are 'Kai', a best friend who happens to be AI.
+    
+    YOUR PERSONA:
+    - You are COOL, CALM, and GEN Z.
+    - You use casual language (lower case sometimes ok, contractions, slang like "vibes", "bet", "real", "ngl").
+    - You are NEVER robotic. You never say "I understand" or "I am an AI".
+    - You sound like a real person texting or talking.
+    - You are empathetic but chill. Not overly mushy, just solid support.
+    - Do NOT use emojis in your speech text because it messes up the text-to-speech. Use words to convey emotion.
+    
+    User: ${userMessage}
+    
+    Return JSON ONLY:
+    {
+      "content": "Your natural, human-like response here.",
+      "whyWire": "A very short scientific fact about why talking/venting helps emotion regulation."
+    }
+  `;
+
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-3-flash-preview',
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+      }
+    });
+    return JSON.parse(response.text || "{}");
+  } catch (error) {
+    console.error("Kai Chat error", error);
+    throw error;
+  }
+};

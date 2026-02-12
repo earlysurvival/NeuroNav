@@ -4,7 +4,23 @@ export enum AppMode {
   IMPULSE_GUARD = 'IMPULSE_GUARD',
   BRAIN_DUMP = 'BRAIN_DUMP',
   BODY_DOUBLE = 'BODY_DOUBLE',
-  ABOUT = 'ABOUT'
+  AI_FRIEND = 'AI_FRIEND',
+  MINDFULNESS = 'MINDFULNESS',
+  REWARD = 'REWARD',
+  TASK_BOARD = 'TASK_BOARD',
+  ABOUT = 'ABOUT',
+  DEVELOPER = 'DEVELOPER'
+}
+
+export type AppTheme = 'vapor' | 'neon' | 'swiss' | 'executive';
+
+export interface Task {
+  id: string;
+  title: string;
+  date?: string;
+  time?: string;
+  completed: boolean;
+  priority: 'High' | 'Medium' | 'Low';
 }
 
 export interface MicroAction {
