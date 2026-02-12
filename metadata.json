@@ -1,0 +1,8 @@
+{
+  "name": "NeuroNav",
+  "description": "An AI co-pilot for ADHD brains, acting as an external pre-frontal cortex for task breakdown, impulse control, and body doubling.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
