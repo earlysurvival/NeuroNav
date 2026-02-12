@@ -1,146 +1,80 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Trophy, Star, Gift, PartyPopper } from 'lucide-react';
+import { Trophy, Star, Gift, PartyPopper, Zap, Target, Flame } from 'lucide-react';
 import WhyWire from './WhyWire';
 
 const RewardCenter: React.FC = () => {
-  const [points, setPoints] = useState(0);
-  const [streak, setStreak] = useState(0);
+  const [points, setPoints] = useState(1250);
+  const [streak, setStreak] = useState(5);
   const [showConfetti, setShowConfetti] = useState(false);
-  
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  useEffect(() => {
-    // Load fake persisted data for demo
-    const savedPoints = localStorage.getItem('neuro-points') || '1250';
-    const savedStreak = localStorage.getItem('neuro-streak') || '3';
-    setPoints(parseInt(savedPoints));
-    setStreak(parseInt(savedStreak));
-  }, []);
-
-  const triggerConfetti = () => {
+  const claimBonus = () => {
     setShowConfetti(true);
-    setPoints(p => {
-        const newP = p + 100;
-        localStorage.setItem('neuro-points', newP.toString());
-        return newP;
-    });
-    
-    // Simple canvas confetti implementation
-    if (canvasRef.current) {
-        const ctx = canvasRef.current.getContext('2d');
-        if (!ctx) return;
-        
-        let particles: any[] = [];
-        for (let i = 0; i < 100; i++) {
-            particles.push({
-                x: canvasRef.current.width / 2,
-                y: canvasRef.current.height / 2,
-                vx: (Math.random() - 0.5) * 10,
-                vy: (Math.random() - 0.5) * 10 - 5,
-                color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-                size: Math.random() * 5 + 2
-            });
-        }
-
-        const animate = () => {
-            if (!ctx || !canvasRef.current) return;
-            ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-            particles.forEach((p, index) => {
-                p.x += p.vx;
-                p.y += p.vy;
-                p.vy += 0.2; // Gravity
-                
-                ctx.fillStyle = p.color;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fill();
-
-                if (p.y > canvasRef.current!.height) particles.splice(index, 1);
-            });
-
-            if (particles.length > 0) requestAnimationFrame(animate);
-            else setShowConfetti(false);
-        };
-        animate();
-    }
+    setPoints(p => p + 150);
+    setTimeout(() => setShowConfetti(false), 3000);
   };
 
   return (
-    <div className="max-w-xl mx-auto p-4 space-y-8 relative">
-       {/* Confetti Canvas Layer */}
-       <canvas 
-          ref={canvasRef} 
-          width={400} 
-          height={400} 
-          className={`absolute top-0 left-0 w-full h-full pointer-events-none z-50 ${showConfetti ? 'block' : 'hidden'}`}
-       />
-
-       <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-white flex items-center justify-center gap-2">
-           Dopamine Depot <Trophy className="w-6 h-6 text-yellow-500" />
-        </h2>
-        <p className="text-gray-600 dark:text-gray-400">Celebrate your wins, no matter how small.</p>
+    <div className="max-w-4xl mx-auto p-6 space-y-10 animate-fade-in relative">
+      <div className="text-center space-y-3">
+        <h2 className="text-5xl font-black tracking-tighter italic uppercase italic">The Depot</h2>
+        <p className="text-gray-500 text-lg font-medium">Turn consistency into currency.</p>
       </div>
 
-      <div className="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-3xl p-8 text-white shadow-xl transform hover:scale-105 transition-transform duration-300">
-         <div className="flex justify-between items-end">
-            <div>
-                <p className="font-bold opacity-80 uppercase tracking-wider text-sm">Total NeuroPoints</p>
-                <h3 className="text-5xl font-extrabold mt-2">{points.toLocaleString()}</h3>
+      <div className="grid md:grid-cols-3 gap-6">
+        <div className="md:col-span-2 bg-black text-white rounded-[2.5rem] p-10 flex flex-col justify-between relative overflow-hidden shadow-2xl">
+            <div className="absolute top-0 right-0 p-10 opacity-10"><Zap className="w-64 h-64 text-indigo-500" /></div>
+            <div className="relative z-10">
+                <p className="text-[10px] uppercase font-black tracking-[0.3em] opacity-40 mb-2">Neuro-Balance</p>
+                <h3 className="text-7xl font-black tracking-tighter text-indigo-400">{points.toLocaleString()}</h3>
+                <p className="text-sm font-bold text-gray-400 mt-2 italic font-serif">"Wealth is the ability to fully experience life."</p>
             </div>
-            <div className="text-right">
-                <div className="flex items-center gap-1 justify-end">
-                    <Star className="w-5 h-5 fill-white text-white" />
-                    <span className="font-bold text-xl">{streak} Day Streak</span>
+            <div className="mt-12 flex items-center gap-6">
+                <div className="flex -space-x-2">
+                    {[1,2,3,4].map(i => <div key={i} className="w-8 h-8 rounded-full border-2 border-black bg-gray-800 flex items-center justify-center text-[10px] font-black">{i}</div>)}
                 </div>
-                <p className="text-xs opacity-80 mt-1">Keep it up!</p>
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Level 4 Cortex Pilot</p>
             </div>
-         </div>
+        </div>
+
+        <div className="bg-gradient-to-br from-orange-500 to-rose-600 rounded-[2.5rem] p-10 text-white flex flex-col justify-between shadow-xl">
+            <div className="flex justify-between items-start">
+                <Flame className="w-12 h-12" />
+                <span className="text-[10px] font-black bg-white/20 px-3 py-1 rounded-full uppercase">On Fire</span>
+            </div>
+            <div>
+                <h4 className="text-6xl font-black tracking-tighter">{streak}</h4>
+                <p className="text-sm font-bold uppercase tracking-widest opacity-80">Day Focus Streak</p>
+            </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-         <button 
-            onClick={triggerConfetti}
-            className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border-2 border-dashed border-gray-200 dark:border-slate-700 hover:border-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-all group flex flex-col items-center gap-3"
-         >
-             <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/50 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                 <PartyPopper className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
-             </div>
-             <span className="font-bold text-gray-700 dark:text-gray-200">Claim Daily Bonus</span>
-         </button>
-
-         <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-700 flex flex-col items-center gap-3 opacity-50 cursor-not-allowed">
-             <div className="w-12 h-12 bg-gray-100 dark:bg-slate-700 rounded-full flex items-center justify-center">
-                 <Gift className="w-6 h-6 text-gray-400" />
-             </div>
-             <span className="font-bold text-gray-500">Unlock Themes (2500 pts)</span>
-         </div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {[
+            { label: 'Daily Bonus', icon: PartyPopper, action: claimBonus, color: 'indigo', val: '+150' },
+            { label: 'Focus Goal', icon: Target, action: null, color: 'teal', val: '2/5' },
+            { label: 'Store', icon: Gift, action: null, color: 'rose', val: 'Shop' },
+            { label: 'Top 10%', icon: Trophy, action: null, color: 'yellow', val: 'Rank' }
+        ].map((btn, i) => (
+            <button 
+                key={i} 
+                onClick={btn.action || undefined}
+                className={`p-6 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-3xl flex flex-col items-center gap-3 transition-all hover:-translate-y-2 hover:shadow-xl group
+                    ${!btn.action ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+                `}
+            >
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center bg-${btn.color}-50 dark:bg-${btn.color}-900/30 text-${btn.color}-600 group-hover:scale-110 transition-transform`}>
+                    <btn.icon className="w-6 h-6" />
+                </div>
+                <div className="text-center">
+                    <p className="text-[10px] font-black uppercase tracking-widest opacity-40">{btn.label}</p>
+                    <p className="font-black text-xl tracking-tight">{btn.val}</p>
+                </div>
+            </button>
+        ))}
       </div>
 
-      <div className="space-y-4">
-          <h4 className="font-bold text-gray-700 dark:text-gray-300">Recent Achievements</h4>
-          <div className="space-y-3">
-              <div className="flex items-center gap-3 bg-white dark:bg-slate-800 p-3 rounded-lg shadow-sm border border-gray-100 dark:border-slate-700">
-                  <span className="text-2xl">🧘</span>
-                  <div>
-                      <p className="font-bold text-gray-800 dark:text-white text-sm">Zen Master</p>
-                      <p className="text-xs text-gray-500">Completed a Mindfulness session</p>
-                  </div>
-                  <span className="ml-auto font-bold text-yellow-600 dark:text-yellow-400 text-sm">+50</span>
-              </div>
-              <div className="flex items-center gap-3 bg-white dark:bg-slate-800 p-3 rounded-lg shadow-sm border border-gray-100 dark:border-slate-700">
-                  <span className="text-2xl">🛡️</span>
-                  <div>
-                      <p className="font-bold text-gray-800 dark:text-white text-sm">Impulse Control</p>
-                      <p className="text-xs text-gray-500">Calculated an impulse purchase</p>
-                  </div>
-                  <span className="ml-auto font-bold text-yellow-600 dark:text-yellow-400 text-sm">+25</span>
-              </div>
-          </div>
-      </div>
-
-      <WhyWire text="Gamification hacks the ADHD brain's reward pathway, artificially boosting dopamine to make 'boring' consistency feel exciting." />
-
+      <WhyWire text="ADHD brains are reward-deficient. By creating 'artificial' immediate rewards for long-term habits, we bypass the Temporal Discounting obstacle." />
     </div>
   );
 };

@@ -1,3 +1,4 @@
+
 import { GoogleGenAI, Type } from "@google/genai";
 import { SYSTEM_INSTRUCTIONS } from "../constants";
 
@@ -46,13 +47,12 @@ export const analyzeImageForBreakdown = async (base64Image: string, mimeType: st
           { text: prompt }
         ]
       },
-      config: {
-        responseMimeType: "application/json",
-      }
+      // FIX: responseMimeType and responseSchema are not supported for nano banana models (gemini-2.5-flash-image)
     });
 
     const text = response.text || "{}";
-    return JSON.parse(text);
+    const jsonStr = cleanJson(text);
+    return JSON.parse(jsonStr);
   } catch (error) {
     console.error("Breakdown error:", error);
     throw error;

@@ -110,28 +110,28 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col transition-colors duration-500 ${getThemeContainerClasses()}`}>
+    <div className={`min-h-screen flex flex-col transition-all duration-700 ease-in-out ${getThemeContainerClasses()}`}>
       
       {/* Name Input Modal */}
       {showNameModal && (
           <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fade-in">
-              <form onSubmit={saveName} className="bg-white dark:bg-slate-900 max-w-sm w-full rounded-3xl p-8 shadow-2xl flex flex-col items-center gap-6">
-                  <div className="p-4 bg-indigo-100 dark:bg-indigo-900 rounded-full">
-                      <UserCircle className="w-12 h-12 text-indigo-600 dark:text-indigo-400" />
+              <form onSubmit={saveName} className="bg-white dark:bg-slate-900 max-w-sm w-full rounded-[2.5rem] p-10 shadow-2xl flex flex-col items-center gap-8">
+                  <div className="p-5 bg-indigo-100 dark:bg-indigo-900/50 rounded-2xl animate-float">
+                      <UserCircle className="w-14 h-14 text-indigo-600 dark:text-indigo-400" />
                   </div>
-                  <div className="text-center">
-                      <h2 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Welcome, Pilot.</h2>
-                      <p className="text-gray-500">What should we call you?</p>
+                  <div className="text-center space-y-2">
+                      <h2 className="text-3xl font-black tracking-tight text-gray-900 dark:text-white uppercase">Initialize.</h2>
+                      <p className="text-gray-500 font-medium">Identify yourself, Pilot.</p>
                   </div>
                   <input 
                     autoFocus
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
-                    placeholder="Enter your name"
-                    className="w-full text-center text-2xl font-bold border-b-2 border-gray-200 focus:border-indigo-500 outline-none bg-transparent py-2"
+                    placeholder="NAME_REQUIRED"
+                    className="w-full text-center text-3xl font-black border-b-4 border-indigo-100 dark:border-white/5 focus:border-indigo-500 outline-none bg-transparent py-3 uppercase tracking-tighter transition-all"
                   />
-                  <button type="submit" disabled={!userName.trim()} className="w-full py-4 bg-indigo-600 text-white rounded-xl font-bold hover:scale-[1.02] transition-transform disabled:opacity-50">
-                      Let's Fly
+                  <button type="submit" disabled={!userName.trim()} className="w-full py-5 bg-indigo-600 text-white rounded-2xl font-black text-lg hover:scale-[1.05] hover:shadow-2xl hover:shadow-indigo-600/30 active:scale-95 transition-all disabled:opacity-30">
+                      ENGAGE CORE
                   </button>
               </form>
           </div>
@@ -140,114 +140,102 @@ const App: React.FC = () => {
       {/* Disclaimer Overlay */}
       {showDisclaimer && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-md p-4 animate-fade-in">
-              <div className="bg-white dark:bg-slate-900 max-w-sm w-full rounded-2xl p-6 shadow-2xl border border-gray-100 dark:border-slate-800">
-                  <div className="flex justify-center mb-4">
-                      <div className="bg-indigo-50 dark:bg-indigo-900/50 p-3 rounded-full">
-                          <ShieldCheck className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+              <div className="bg-white dark:bg-slate-900 max-w-sm w-full rounded-3xl p-8 shadow-2xl border border-white/10">
+                  <div className="flex justify-center mb-6">
+                      <div className="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-full">
+                          <ShieldCheck className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />
                       </div>
                   </div>
-                  <h2 className="text-xl font-bold text-center mb-2">Safety Check</h2>
-                  <p className="text-center text-sm text-gray-500 dark:text-gray-400 mb-6">
-                      NeuroNav is an organizational aid, not a medical device.
+                  <h2 className="text-2xl font-black text-center mb-3 uppercase tracking-tighter">Safety Protocol</h2>
+                  <p className="text-center text-sm text-gray-500 dark:text-gray-400 mb-8 leading-relaxed">
+                      NeuroNav is a <strong>Cognitive Prosthetic</strong>. It provides organizational aid, not clinical treatment.
                   </p>
-                  <button onClick={acceptDisclaimer} className="w-full py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition">
-                      Got it
+                  <button onClick={acceptDisclaimer} className="w-full py-4 bg-indigo-600 text-white font-black rounded-xl hover:bg-indigo-700 shadow-xl transition-all">
+                      I ACKNOWLEDGE
                   </button>
               </div>
           </div>
       )}
 
-      {/* Theme Background FX */}
-      {appTheme === 'vapor' && (
-        <div className="fixed inset-0 pointer-events-none z-0">
-           <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-purple-200/40 dark:bg-purple-900/20 rounded-full blur-[120px]"></div>
-           <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-200/40 dark:bg-blue-900/20 rounded-full blur-[120px]"></div>
-        </div>
-      )}
-      {appTheme === 'neon' && (
-         <div className="fixed inset-0 pointer-events-none z-0 bg-[linear-gradient(rgba(18,18,18,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06)_1px,transparent_0,transparent_80px),linear-gradient(rgba(255,0,0,0.06)_1px,transparent_0,transparent_80px)] bg-[length:100%_4px,40px_100%,100%_40px]"></div>
-      )}
-
       {/* Header */}
-      <header className={`sticky top-0 z-50 transition-all duration-300
-         ${appTheme === 'swiss' ? 'bg-white border-b-2 border-black py-4' : 
-           appTheme === 'executive' ? 'bg-[#F2F0E9]/90 dark:bg-[#1C1C1E]/90 border-b border-stone-300 dark:border-stone-800 backdrop-blur-md py-4' :
-           appTheme === 'neon' ? 'bg-slate-950/90 border-b border-slate-800 backdrop-blur-md py-4' :
-           'bg-white/60 dark:bg-slate-950/60 backdrop-blur-xl border-b border-white/20 py-4'}
+      <header className={`sticky top-0 z-50 transition-all duration-500
+         ${appTheme === 'swiss' ? 'bg-white border-b-4 border-black py-5' : 
+           appTheme === 'executive' ? 'bg-[#F2F0E9]/90 dark:bg-[#1C1C1E]/90 border-b border-stone-300 dark:border-stone-800 backdrop-blur-xl py-5' :
+           appTheme === 'neon' ? 'bg-slate-950/90 border-b border-white/5 backdrop-blur-xl py-5' :
+           'bg-white/60 dark:bg-slate-950/60 backdrop-blur-2xl border-b border-white/10 py-5'}
       `}>
-        <div className="max-w-5xl mx-auto px-6 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
           
           {/* Logo Section */}
-          <div className="flex items-center gap-3 cursor-pointer group" onClick={() => setCurrentMode(AppMode.DASHBOARD)}>
-            <div className={`p-2 transition-transform group-hover:rotate-12
-                ${appTheme === 'vapor' ? 'bg-gradient-to-tr from-indigo-400 to-purple-400 rounded-xl text-white shadow-lg shadow-indigo-200 dark:shadow-none' : ''}
+          <div className="flex items-center gap-4 cursor-pointer group" onClick={() => setCurrentMode(AppMode.DASHBOARD)}>
+            <div className={`p-2.5 transition-all duration-500 group-hover:rotate-[360deg] group-hover:scale-110
+                ${appTheme === 'vapor' ? 'bg-gradient-to-tr from-indigo-500 to-pink-500 rounded-2xl text-white shadow-xl shadow-indigo-500/20' : ''}
                 ${appTheme === 'swiss' ? 'bg-black text-white rounded-none' : ''}
-                ${appTheme === 'executive' ? 'text-stone-800 dark:text-stone-200 border border-stone-800 dark:border-stone-200 rounded-full' : ''}
-                ${appTheme === 'neon' ? 'text-cyan-400 border border-cyan-400 rounded-md shadow-[0_0_10px_rgba(34,211,238,0.4)]' : ''}
+                ${appTheme === 'executive' ? 'text-stone-800 dark:text-stone-200 border-2 border-stone-800 dark:border-stone-200 rounded-full' : ''}
+                ${appTheme === 'neon' ? 'text-cyan-400 border border-cyan-400 rounded-xl shadow-[0_0_15px_rgba(34,211,238,0.3)]' : ''}
             `}>
-                <Brain className="w-6 h-6" />
+                <Brain className="w-7 h-7" />
             </div>
             <div className="flex flex-col">
-                <h1 className={`text-xl font-bold leading-none tracking-tight
-                    ${appTheme === 'swiss' ? 'uppercase tracking-tighter text-2xl' : ''}
-                    ${appTheme === 'executive' ? 'font-serif tracking-wide' : ''}
+                <h1 className={`text-2xl font-black leading-none tracking-tighter
+                    ${appTheme === 'swiss' ? 'uppercase text-3xl italic' : ''}
+                    ${appTheme === 'executive' ? 'font-serif tracking-normal italic' : ''}
                 `}>
                     {APP_NAME}
                 </h1>
-                <span className={`text-[10px] font-medium opacity-60
-                    ${appTheme === 'neon' ? 'text-cyan-600' : ''}
+                <span className={`text-[10px] font-black uppercase tracking-[0.2em] opacity-40
+                    ${appTheme === 'neon' ? 'text-cyan-600 opacity-100' : ''}
                     ${appTheme === 'swiss' ? 'hidden' : ''}
-                `}>External Cortex v2.0</span>
+                `}>Bio-Digital Interface</span>
             </div>
           </div>
           
           {/* Controls Section */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
              {currentMode !== AppMode.DASHBOARD && (
                  <button 
                     onClick={() => setCurrentMode(AppMode.DASHBOARD)}
-                    className={`flex items-center gap-2 px-4 py-2 text-sm font-bold transition-all
-                        ${appTheme === 'swiss' ? 'bg-red-600 text-white hover:bg-red-700' : 
-                          appTheme === 'neon' ? 'text-cyan-400 border border-cyan-900 hover:bg-cyan-900/20' :
-                          'bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 rounded-full'}
+                    className={`flex items-center gap-2 px-5 py-2.5 text-xs font-black uppercase tracking-widest transition-all
+                        ${appTheme === 'swiss' ? 'bg-black text-white hover:bg-red-600 rounded-none' : 
+                          appTheme === 'neon' ? 'text-cyan-400 border border-cyan-400/30 hover:bg-cyan-400 hover:text-black rounded-xl' :
+                          'bg-gray-100 dark:bg-white/5 hover:scale-105 rounded-2xl'}
                     `}
                  >
                     <ArrowLeft className="w-4 h-4" />
-                    <span className="hidden sm:inline">Back</span>
+                    <span className="hidden sm:inline">Return</span>
                  </button>
              )}
 
-             <div className={`flex p-1 gap-1 border rounded-full
-                ${appTheme === 'swiss' ? 'border-2 border-black rounded-none bg-white' : 
-                  appTheme === 'neon' ? 'border-slate-800 bg-slate-900 rounded-md' :
-                  'bg-gray-100 dark:bg-slate-800 border-transparent'}
+             <div className={`flex p-1 gap-1 border rounded-2xl
+                ${appTheme === 'swiss' ? 'border-4 border-black rounded-none bg-white shadow-[4px_4px_0px_rgba(0,0,0,1)]' : 
+                  appTheme === 'neon' ? 'border-white/5 bg-white/5 rounded-xl' :
+                  'bg-gray-100 dark:bg-white/5 border-transparent'}
              `}>
                  {[
-                   { id: 'vapor', icon: Sparkles, label: 'Vapor' },
-                   { id: 'neon', icon: Laptop, label: 'Neon' },
-                   { id: 'swiss', icon: Grid, label: 'Swiss' },
-                   { id: 'executive', icon: Briefcase, label: 'Exec' },
+                   { id: 'vapor', icon: Sparkles },
+                   { id: 'neon', icon: Laptop },
+                   { id: 'swiss', icon: Grid },
+                   { id: 'executive', icon: Briefcase },
                  ].map((t) => (
                    <button 
                       key={t.id}
                       onClick={() => setAppTheme(t.id as AppTheme)} 
-                      className={`p-2 rounded-full transition-all
-                        ${appTheme === t.id ? 'bg-white dark:bg-slate-700 shadow-sm' : 'opacity-40 hover:opacity-100'}
+                      className={`p-2.5 rounded-xl transition-all duration-300
+                        ${appTheme === t.id ? 'bg-white dark:bg-white/10 shadow-lg scale-110' : 'opacity-30 hover:opacity-100 hover:scale-105'}
                         ${appTheme === t.id && appTheme === 'swiss' ? 'bg-black text-white rounded-none' : ''}
-                        ${appTheme === t.id && appTheme === 'neon' ? 'bg-cyan-900/30 text-cyan-400 rounded-sm' : ''}
+                        ${appTheme === t.id && appTheme === 'neon' ? 'bg-cyan-400 text-black rounded-lg' : ''}
                       `}
-                      title={t.label}
                    >
                       <t.icon className="w-4 h-4" />
                    </button>
                  ))}
              </div>
 
-             <button onClick={toggleThemeMode} className="p-2 opacity-50 hover:opacity-100 transition">
+             <button onClick={toggleThemeMode} className="p-3 bg-gray-100 dark:bg-white/5 rounded-2xl opacity-60 hover:opacity-100 transition-all hover:scale-110">
                  {themeMode === 'light' ? <Moon className="w-5 h-5"/> : <Sun className="w-5 h-5"/>}
              </button>
              
-             <button onClick={() => setCurrentMode(AppMode.ABOUT)} className="p-2 opacity-50 hover:opacity-100 transition">
+             <button onClick={() => setCurrentMode(AppMode.ABOUT)} className="p-3 bg-gray-100 dark:bg-white/5 rounded-2xl opacity-60 hover:opacity-100 transition-all hover:scale-110">
                  <UserCircle className="w-5 h-5" />
              </button>
           </div>
@@ -255,8 +243,8 @@ const App: React.FC = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow w-full max-w-5xl mx-auto px-6 py-8 relative z-10 flex flex-col items-center">
-        <div className="w-full animate-slide-up">
+      <main className="flex-grow w-full max-w-6xl mx-auto px-6 py-12 relative z-10 flex flex-col items-center">
+        <div className="w-full">
             {renderContent()}
         </div>
       </main>
@@ -265,158 +253,164 @@ const App: React.FC = () => {
   );
 };
 
-// Dashboard Component with 4 Distinct Artistic Themes
+// Dashboard Component with Improved Alignment and Visual Polish
 const Dashboard: React.FC<{ onSelectMode: (mode: AppMode) => void, appTheme: AppTheme, userName: string, taskCount: number }> = ({ onSelectMode, appTheme, userName, taskCount }) => {
   
   const getCardClasses = (featured = false) => {
-      const base = "relative overflow-hidden cursor-pointer transition-all duration-300 group flex flex-col justify-between";
+      const base = "relative overflow-hidden cursor-pointer transition-all duration-500 group flex flex-col justify-between transform-gpu";
       
       if (appTheme === 'vapor') {
-          return `${base} bg-white/40 dark:bg-white/5 backdrop-blur-lg border border-white/50 dark:border-white/10 rounded-3xl p-6 hover:bg-white/60 dark:hover:bg-white/10 hover:scale-[1.02] shadow-xl shadow-indigo-100/20 dark:shadow-none`;
+          return `${base} bg-white/60 dark:bg-white/5 backdrop-blur-xl border border-white dark:border-white/10 rounded-[2.5rem] p-8 hover:bg-white/90 dark:hover:bg-white/10 hover:shadow-[0_20px_60px_-15px_rgba(79,70,229,0.2)] hover:-translate-y-2`;
       }
       if (appTheme === 'neon') {
-          return `${base} bg-slate-900 border border-slate-800 p-6 rounded-lg hover:border-cyan-500 hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]`;
+          return `${base} bg-[#0A0A0B] border border-white/5 p-8 rounded-2xl hover:border-cyan-400 hover:shadow-[0_0_30px_rgba(34,211,238,0.2)] hover:-translate-y-1`;
       }
       if (appTheme === 'swiss') {
-          return `${base} bg-white border-2 border-black p-6 hover:bg-black hover:text-white rounded-none transition-colors duration-200`;
+          return `${base} bg-white border-4 border-black p-8 hover:bg-black hover:text-white rounded-none hover:translate-x-[4px] hover:-translate-y-[4px] hover:shadow-[8px_8px_0px_rgba(0,0,0,1)]`;
       }
       if (appTheme === 'executive') {
-          return `${base} bg-[#EBE9E1] dark:bg-[#252525] border border-stone-300 dark:border-stone-700 p-8 rounded-sm hover:shadow-2xl hover:-translate-y-1`;
+          return `${base} bg-[#EBE9E1] dark:bg-[#202022] border border-stone-300 dark:border-stone-800 p-10 rounded-sm hover:shadow-2xl hover:-translate-y-1 transition-transform duration-700`;
       }
       return base;
   };
 
   const renderName = () => {
-    if (appTheme === 'neon') return <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 animate-pulse">{userName || 'Pilot'}</span>;
-    if (appTheme === 'swiss') return <span className="bg-black text-white px-2">{userName || 'PILOT'}</span>;
-    if (appTheme === 'executive') return <span className="italic border-b-2 border-stone-400">{userName || 'Pilot'}</span>;
-    return <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-pink-500">{userName || 'Pilot'}</span>;
+    if (appTheme === 'neon') return <span className="text-cyan-400 animate-pulse font-mono">> {userName.toUpperCase()}_</span>;
+    if (appTheme === 'swiss') return <span className="bg-red-600 text-white px-3 italic uppercase">{userName}</span>;
+    if (appTheme === 'executive') return <span className="italic font-serif border-b-2 border-stone-500">{userName}</span>;
+    return <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500 font-black">{userName}</span>;
   };
 
   return (
     <div className="w-full flex flex-col items-center">
         
         {/* Welcome Text */}
-        <div className="text-center mb-12 max-w-2xl animate-fade-in">
+        <div className="text-center mb-16 max-w-3xl animate-slide-up">
             {appTheme === 'swiss' && (
-                <h2 className="text-6xl font-black uppercase tracking-tighter text-black dark:text-white mb-2 leading-[0.9]">
-                    HELLO, {renderName()}.<br/><span className="text-red-600">READY?</span>
+                <h2 className="text-7xl font-black uppercase tracking-tighter text-black dark:text-white mb-4 leading-[0.85]">
+                    WELCOME BACK,<br/>{renderName()}.
                 </h2>
             )}
             {appTheme === 'neon' && (
-                <h2 className="text-4xl font-mono text-slate-200 mb-2">
-                    > WELCOME_BACK_{renderName()}_
-                </h2>
+                <div className="space-y-4">
+                  <h2 className="text-5xl font-mono text-white mb-2 tracking-tighter">
+                      AUTHENTICATED_ACCESS
+                  </h2>
+                  <p className="text-cyan-500/60 font-mono text-sm tracking-widest">{renderName()} | SESSION_OPEN</p>
+                </div>
             )}
             {(appTheme === 'vapor' || appTheme === 'executive') && (
-                <h2 className={`text-5xl font-bold tracking-tight text-slate-800 dark:text-white mb-2 ${appTheme === 'executive' ? 'font-serif' : ''}`}>
-                    Ready to flow, {renderName()}?
-                </h2>
+                <div className="space-y-4">
+                  <h2 className={`text-6xl font-black tracking-tight text-gray-900 dark:text-white ${appTheme === 'executive' ? 'font-serif' : ''}`}>
+                      The world is yours, {renderName()}.
+                  </h2>
+                  <p className="text-xl text-gray-500 font-medium">Ready to take the first step?</p>
+                </div>
             )}
         </div>
 
         {/* The Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-4xl auto-rows-[200px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-5xl auto-rows-[220px]">
             
             {/* KAI - Featured Card */}
             <button 
                 onClick={() => onSelectMode(AppMode.AI_FRIEND)}
                 className={`md:col-span-2 ${getCardClasses(true)} ${appTheme === 'swiss' ? 'bg-red-600 border-red-600 text-white hover:bg-black hover:border-black' : ''}`}
             >
-                <div className="relative z-10 h-full flex flex-col justify-between items-start text-left w-full">
+                <div className="relative z-10 h-full flex flex-col justify-between items-start text-left w-full animate-fade-in" style={{animationDelay: '0.1s'}}>
                     <div className="flex justify-between w-full items-start">
-                        <div className={`p-3 rounded-xl ${appTheme === 'vapor' ? 'bg-pink-100/50 text-pink-600' : ''}`}>
-                             <MODE_CONFIG.AI_FRIEND.icon className="w-8 h-8" />
+                        <div className={`p-4 rounded-2xl ${appTheme === 'vapor' ? 'bg-pink-100/50 text-pink-600 shadow-xl' : 'bg-white/10'}`}>
+                             <MODE_CONFIG.AI_FRIEND.icon className="w-10 h-10" />
                         </div>
-                        <span className="text-[10px] font-bold uppercase tracking-wider opacity-70 border border-current px-2 py-1 rounded-full">Always Online</span>
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-80 border-2 border-current px-4 py-1.5 rounded-full">Neuro_Companion_Active</span>
                     </div>
                     <div>
-                        <h3 className="text-3xl font-bold mb-1">Kai Companion</h3>
-                        <p className="opacity-80 font-medium">Vent, process, and plan with your AI friend.</p>
+                        <h3 className="text-4xl font-black mb-2 tracking-tighter">Connect with Kai</h3>
+                        <p className="opacity-80 text-lg font-medium leading-tight max-w-md">Vent, process emotions, and build tiny plans with your digital pet.</p>
                     </div>
                 </div>
             </button>
 
-            {/* Smart Plan (New) */}
-            <button onClick={() => onSelectMode(AppMode.TASK_BOARD)} className={getCardClasses()}>
-                 <div className="flex justify-between w-full">
-                    <div className={`p-3 rounded-xl ${appTheme === 'vapor' ? 'bg-indigo-100/50 text-indigo-600' : ''}`}>
-                         <MODE_CONFIG.TASK_BOARD.icon className="w-8 h-8" />
+            {/* Smart Plan */}
+            <button onClick={() => onSelectMode(AppMode.TASK_BOARD)} className={getCardClasses()} style={{animationDelay: '0.2s'}}>
+                 <div className="flex justify-between w-full items-start animate-fade-in">
+                    <div className={`p-4 rounded-2xl ${appTheme === 'vapor' ? 'bg-indigo-100/50 text-indigo-600 shadow-xl' : 'bg-white/10'}`}>
+                         <MODE_CONFIG.TASK_BOARD.icon className="w-9 h-9" />
                     </div>
                     {taskCount > 0 && (
-                        <span className="bg-red-500 text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full shadow-md">
+                        <span className="bg-red-600 text-white text-xs font-black w-8 h-8 flex items-center justify-center rounded-2xl shadow-xl shadow-red-600/30 animate-bounce">
                             {taskCount}
                         </span>
                     )}
                  </div>
-                 <div className="text-left mt-auto">
-                     <h3 className="text-xl font-bold">Smart Plan</h3>
-                     <p className="text-sm opacity-60 mt-1 font-medium">Calendar & Tasks</p>
+                 <div className="text-left mt-auto animate-fade-in">
+                     <h3 className="text-2xl font-black tracking-tight">Smart Plan</h3>
+                     <p className="text-sm opacity-50 font-bold uppercase tracking-widest mt-1">Calendar Core</p>
                  </div>
             </button>
 
-            <button onClick={() => onSelectMode(AppMode.TASK_BREAKDOWN)} className={getCardClasses()}>
-                 <div className={`p-3 w-fit rounded-xl ${appTheme === 'vapor' ? 'bg-blue-100/50 text-blue-600' : ''}`}>
-                    <MODE_CONFIG.TASK_BREAKDOWN.icon className="w-8 h-8 mb-auto" />
+            <button onClick={() => onSelectMode(AppMode.TASK_BREAKDOWN)} className={getCardClasses()} style={{animationDelay: '0.3s'}}>
+                 <div className={`p-4 w-fit rounded-2xl ${appTheme === 'vapor' ? 'bg-blue-100/50 text-blue-600 shadow-xl' : 'bg-white/10'}`}>
+                    <MODE_CONFIG.TASK_BREAKDOWN.icon className="w-9 h-9" />
                  </div>
                  <div className="text-left mt-auto">
-                     <h3 className="text-xl font-bold">Breakdown</h3>
-                     <p className="text-sm opacity-60 mt-1 font-medium">Visual De-overwhelm</p>
+                     <h3 className="text-2xl font-black tracking-tight">Breakdown</h3>
+                     <p className="text-sm opacity-50 font-bold uppercase tracking-widest mt-1">Visual Logic</p>
                  </div>
             </button>
 
-            <button onClick={() => onSelectMode(AppMode.IMPULSE_GUARD)} className={getCardClasses()}>
-                 <div className={`p-3 w-fit rounded-xl ${appTheme === 'vapor' ? 'bg-rose-100/50 text-rose-600' : ''}`}>
-                    <MODE_CONFIG.IMPULSE_GUARD.icon className="w-8 h-8 mb-auto" />
+            <button onClick={() => onSelectMode(AppMode.IMPULSE_GUARD)} className={getCardClasses()} style={{animationDelay: '0.4s'}}>
+                 <div className={`p-4 w-fit rounded-2xl ${appTheme === 'vapor' ? 'bg-rose-100/50 text-rose-600 shadow-xl' : 'bg-white/10'}`}>
+                    <MODE_CONFIG.IMPULSE_GUARD.icon className="w-9 h-9" />
                  </div>
                  <div className="text-left mt-auto">
-                     <h3 className="text-xl font-bold">Impulse Guard</h3>
-                     <p className="text-sm opacity-60 mt-1 font-medium">Spending Friction</p>
+                     <h3 className="text-2xl font-black tracking-tight">Friction</h3>
+                     <p className="text-sm opacity-50 font-bold uppercase tracking-widest mt-1">Impulse Shield</p>
                  </div>
             </button>
 
-            <button onClick={() => onSelectMode(AppMode.BRAIN_DUMP)} className={`md:col-span-2 ${getCardClasses()}`}>
-                 <div className="flex flex-row items-center gap-6 h-full text-left">
-                     <div className={`p-6 rounded-full flex-shrink-0
-                        ${appTheme === 'vapor' ? 'bg-indigo-100 text-indigo-600' : 'border-2 border-current'}
-                        ${appTheme === 'swiss' ? 'border-2 border-white' : ''}
+            <button onClick={() => onSelectMode(AppMode.BRAIN_DUMP)} className={`md:col-span-2 ${getCardClasses()}`} style={{animationDelay: '0.5s'}}>
+                 <div className="flex flex-row items-center gap-8 h-full text-left w-full px-2">
+                     <div className={`p-8 rounded-[2rem] flex-shrink-0 transition-transform duration-500 group-hover:rotate-12
+                        ${appTheme === 'vapor' ? 'bg-indigo-100 text-indigo-600 shadow-2xl' : 'border-2 border-current'}
+                        ${appTheme === 'swiss' ? 'border-4 border-white bg-black text-white rounded-none' : ''}
                      `}>
-                        <MODE_CONFIG.BRAIN_DUMP.icon className="w-10 h-10" />
+                        <MODE_CONFIG.BRAIN_DUMP.icon className="w-12 h-12" />
                      </div>
-                     <div>
-                         <h3 className="text-2xl font-bold">Brain Dump</h3>
-                         <p className="opacity-70 mt-1 font-medium">Turn mental chaos into a structured plan.</p>
+                     <div className="space-y-2">
+                         <h3 className="text-3xl font-black tracking-tighter uppercase">The Brain Dump</h3>
+                         <p className="opacity-60 text-lg font-medium leading-tight">Offload the noise. We convert chaos into actionable neuro-paths.</p>
                      </div>
                  </div>
             </button>
 
-            <button onClick={() => onSelectMode(AppMode.BODY_DOUBLE)} className={getCardClasses()}>
-                 <div className={`p-3 w-fit rounded-xl ${appTheme === 'vapor' ? 'bg-emerald-100/50 text-emerald-600' : ''}`}>
-                    <MODE_CONFIG.BODY_DOUBLE.icon className="w-8 h-8 mb-auto" />
+            <button onClick={() => onSelectMode(AppMode.BODY_DOUBLE)} className={getCardClasses()} style={{animationDelay: '0.6s'}}>
+                 <div className={`p-4 w-fit rounded-2xl ${appTheme === 'vapor' ? 'bg-emerald-100/50 text-emerald-600 shadow-xl' : 'bg-white/10'}`}>
+                    <MODE_CONFIG.BODY_DOUBLE.icon className="w-9 h-9" />
                  </div>
                  <div className="text-left mt-auto">
-                     <h3 className="text-xl font-bold">Body Double</h3>
-                     <p className="text-sm opacity-60 mt-1 font-medium">Presence Timer</p>
+                     <h3 className="text-2xl font-black tracking-tight">Presence</h3>
+                     <p className="text-sm opacity-50 font-bold uppercase tracking-widest mt-1">Body Doubling</p>
                  </div>
             </button>
 
-            <button onClick={() => onSelectMode(AppMode.MINDFULNESS)} className={getCardClasses()}>
-                 <div className={`p-3 w-fit rounded-xl ${appTheme === 'vapor' ? 'bg-teal-100/50 text-teal-600' : ''}`}>
-                    <MODE_CONFIG.MINDFULNESS.icon className="w-8 h-8 mb-auto" />
+            <button onClick={() => onSelectMode(AppMode.MINDFULNESS)} className={getCardClasses()} style={{animationDelay: '0.7s'}}>
+                 <div className={`p-4 w-fit rounded-2xl ${appTheme === 'vapor' ? 'bg-teal-100/50 text-teal-600 shadow-xl' : 'bg-white/10'}`}>
+                    <MODE_CONFIG.MINDFULNESS.icon className="w-9 h-9" />
                  </div>
                  <div className="text-left mt-auto">
-                     <h3 className="text-xl font-bold">Mindfulness</h3>
-                     <p className="text-sm opacity-60 mt-1 font-medium">Soundscapes & Breath</p>
+                     <h3 className="text-2xl font-black tracking-tight">Atmosphere</h3>
+                     <p className="text-sm opacity-50 font-bold uppercase tracking-widest mt-1">Bio-Soundscapes</p>
                  </div>
             </button>
 
-             <button onClick={() => onSelectMode(AppMode.REWARD)} className={getCardClasses()}>
-                 <div className={`p-3 w-fit rounded-xl ${appTheme === 'vapor' ? 'bg-yellow-100/50 text-yellow-600' : ''}`}>
-                    <MODE_CONFIG.REWARD.icon className="w-8 h-8 mb-auto" />
+             <button onClick={() => onSelectMode(AppMode.REWARD)} className={getCardClasses()} style={{animationDelay: '0.8s'}}>
+                 <div className={`p-4 w-fit rounded-2xl ${appTheme === 'vapor' ? 'bg-yellow-100/50 text-yellow-600 shadow-xl' : 'bg-white/10'}`}>
+                    <MODE_CONFIG.REWARD.icon className="w-9 h-9" />
                  </div>
                  <div className="text-left mt-auto">
-                     <h3 className="text-xl font-bold">Rewards</h3>
-                     <p className="text-sm opacity-60 mt-1 font-medium">Dopamine Depot</p>
+                     <h3 className="text-2xl font-black tracking-tight">Depot</h3>
+                     <p className="text-sm opacity-50 font-bold uppercase tracking-widest mt-1">Dopamine Wins</p>
                  </div>
             </button>
 

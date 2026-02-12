@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Terminal, Lock, TrendingUp, Map, List, Globe, Save, FileText, Check, AlertTriangle } from 'lucide-react';
+import { Terminal, Lock, TrendingUp, Map, List, Globe, Save, FileText, Check, AlertTriangle, CreditCard, Users, Zap, Briefcase, Code, BarChart3 } from 'lucide-react';
 import { APP_NAME } from '../constants';
 
 const DeveloperPortal: React.FC = () => {
@@ -8,44 +8,36 @@ const DeveloperPortal: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'plan' | 'roadmap' | 'features' | 'competitors' | 'notes'>('plan');
   const [notes, setNotes] = useState('');
 
-  // Note persistence
   useEffect(() => {
-    const savedNotes = localStorage.getItem('neuronav-dev-notes');
-    if (savedNotes) setNotes(savedNotes);
+    const saved = localStorage.getItem('neuronav-dev-notes');
+    if (saved) setNotes(saved);
   }, []);
 
-  const handleSaveNotes = () => {
+  const handleSave = () => {
     localStorage.setItem('neuronav-dev-notes', notes);
-    alert('DevLog Synced.');
-  };
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password === 'admin') setIsAuthenticated(true);
-    else alert('Access Denied: Invalid Credentials');
+    alert('SECURE_SYNC_COMPLETE');
   };
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center animate-fade-in">
-        <div className="bg-black text-green-500 p-8 rounded-xl font-mono border border-green-800 shadow-2xl w-full max-w-md">
-          <div className="flex items-center gap-2 mb-6 border-b border-green-800 pb-2">
-            <Terminal className="w-6 h-6" />
-            <h2 className="text-xl font-bold tracking-widest">ROOT_ACCESS</h2>
+      <div className="min-h-[70vh] flex flex-col items-center justify-center p-4">
+        <div className="bg-zinc-950 text-indigo-500 p-12 rounded-[2.5rem] font-mono border border-indigo-900/30 shadow-[0_0_80px_rgba(79,70,229,0.1)] w-full max-w-lg transition-all duration-700">
+          <div className="flex flex-col items-center text-center gap-4 mb-10">
+            <div className="bg-indigo-600/10 p-4 rounded-full animate-float"><Lock className="w-10 h-10" /></div>
+            <h2 className="text-3xl font-black tracking-tighter text-white uppercase italic">Access Restricted</h2>
+            <p className="text-[10px] text-indigo-300 opacity-50 uppercase tracking-[0.4em]">Developer Authorization Required</p>
           </div>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div className="space-y-1">
-              <label className="text-xs uppercase opacity-70">Enter Passphrase:</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-black border-2 border-green-900 focus:border-green-500 outline-none p-3 text-white rounded-md"
-                autoFocus
-              />
-            </div>
-            <button type="submit" className="w-full bg-green-900/50 hover:bg-green-800 text-green-400 py-2 rounded border border-green-700 uppercase font-bold tracking-widest transition-colors">
-              Decrypt
+          <form onSubmit={(e) => { e.preventDefault(); if(password==='admin') setIsAuthenticated(true); else alert('VOID'); }} className="space-y-6">
+            <input
+              type="password"
+              value={password}
+              placeholder="PASSCODE"
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full bg-white/5 border-2 border-indigo-900/50 focus:border-indigo-500 outline-none p-5 text-white text-center rounded-2xl tracking-[0.5em]"
+              autoFocus
+            />
+            <button type="submit" className="w-full bg-indigo-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-indigo-500 active:scale-95 transition-all shadow-[0_20px_40px_-10px_rgba(79,70,229,0.4)]">
+              Validate Signature
             </button>
           </form>
         </div>
@@ -53,217 +45,110 @@ const DeveloperPortal: React.FC = () => {
     );
   }
 
-  // Content Data
-  const featuresList = [
-      "Wearable Sync (Apple Watch/Garmin)", "Medication Tapering Alerts", "Therapist Data Export (PDF)", "AI Voice Journaling", "Sleep Rhythm Analytics",
-      "Meal Prep for Exec Dysfunction", "Grocery List Automation", "Browser Extension Blocker", "Focus Music Generator (Real-time)", "Social Battery Monitor",
-      "Task Gamification RPG Mode", "Pet Evolution System", "AR Room Organization", "Receipt Scanner for Budget", "Subscription Canceller",
-      "Email Summary AI", "Meeting Transcriber", "Tone Detector for Texts", "Rejection Sensitivity (RSD) Soother", "Hyperfocus Timer (Pomodoro Inverse)",
-      "Object Permanence Widget (Recent Files)", "Clutter Heatmap", "Dopamine Menu Builder", "Sensory Overload Alert", "Binaural Beats Player",
-      "Body Doubling Community P2P", "Accountability Partner Match", "Streak Freeze Bank", "Custom Themes Marketplace", "Widget Stack (iOS/Android)",
-      "Focus Mode Launcher (Android)", "Notification Batching", "Morning Routine Builder", "Bedtime Wind-down Protocol", "Water Intake Smart Reminders",
-      "Meds Refill Automation", "Insurance Claim Helper", "Job Application Tracker", "Password Manager Integration", "Memory Palace AR",
-      "Voice-to-Task Quick Capture", "Smart Calendar Blocking", "Travel Packing Generator", "Outfit Decision Helper", "Cleaning Playlist Sync",
-      "Tax Document Organizer", "Impulse Buy 'Cool Down' Locker", "Family Plan Sync", "Teacher/IEP Mode", "Crisis Hotline Quick Access"
-  ];
-
-  const competitors = [
-      { name: "Tiimo", rev: "$5M ARR", weakness: "Visuals only, no AI analysis." },
-      { name: "Motion", rev: "$15M ARR", weakness: "Too expensive ($30/mo), complex UI." },
-      { name: "Goblin Tools", rev: "Donation/Low", weakness: "Web only, no holistic system." },
-      { name: "Dubbii", rev: "$1M ARR", weakness: "Video only, no task management." },
-      { name: "Inflow", rev: "$8M ARR", weakness: "CBT heavy, low practical utility." }
+  const features = [
+    "Neuro-Sync Wearable API", "Eye-Tracking Vigilance Monitor", "Real-time Cortisol Prediction", "Smart Med Dispensary Hook", "Family Cognitive Bridge",
+    "School IEP Automation Pipeline", "HIPAA-Compliant Therapist Export", "RSD (Rejection) Shield AI", "Time-Blindness Visualizer (AR)", "Social Interaction Scripting",
+    "Justice Sensitivity Filter", "Decision Fatigue Multi-choice AI", "Morning Momentum Launcher", "Bedtime Logic-Gate Lock", "Object Permanence 'Last Seen' Tracker",
+    "Audit-Log for Med Side Effects", "Binaural Frequency Adaptive Play", "Body Doubling Matchmaking (Global)", "Focus-Mode Chrome/Safari Extension", "Smart Grocery 'No-Decision' Shop",
+    "Email De-Overwhelm Summary", "Meeting Transcription (Task-Extraction)", "Career Path AI Alignment", "Hormonal Focus Mapping (Luteal/Follicular)", "Justice-Sensitivity Journaling",
+    "Hyperfocus Interruption protocol", "Clutter Heatmap AR", "Meal Prep Cognitive Offloader", "Conflict Resolution Tone-Detector", "Micro-dose Pattern Tracker",
+    "Executive Function Daily Score", "Predictive Burnout Analytics", "Vagus Nerve Stimulation Prompts", "Blood Sugar Focus Integration", "Job Market Accessibility Filter",
+    "Resume 'Neuro-translation' Tool", "Teacher-Parent Real-time Sync", "Life Transition Planning Suite", "Debt-Management Friction-UI", "Object Locator AR Integration",
+    "Crowdsourced Focus Room Sync", "Conflict Mediation Voice AI", "Child-Mode / Parental-Control Focus", "Travel Panic-Mode Protocol", "Skill Acquisition Hyper-Accelerator",
+    "Executive Assistant Voice-Clone", "Medication Tapering Log", "Sensory Overload Early Warning", "Interoception Breath Guidance", "Dopamine Menu Generator"
   ];
 
   return (
-    <div className="w-full max-w-6xl mx-auto min-h-screen bg-white dark:bg-[#111] text-gray-900 dark:text-gray-100 font-sans shadow-2xl rounded-xl overflow-hidden animate-fade-in border border-gray-200 dark:border-gray-800">
-      
-      {/* Header */}
-      <div className="bg-black text-white p-4 flex justify-between items-center border-b border-gray-800">
-        <div className="flex items-center gap-3">
-            <div className="bg-blue-600 p-2 rounded-lg"><Terminal className="w-5 h-5"/></div>
+    <div className="w-full max-w-7xl mx-auto bg-white dark:bg-black rounded-[3rem] overflow-hidden shadow-2xl flex flex-col border border-gray-200 dark:border-white/5 animate-slide-up">
+      <div className="bg-zinc-950 text-white p-8 flex justify-between items-center">
+        <div className="flex items-center gap-5">
+            <div className="bg-indigo-600 p-3 rounded-2xl"><Terminal className="w-6 h-6"/></div>
             <div>
-                <h1 className="font-bold text-lg tracking-tight">{APP_NAME} <span className="opacity-50 font-normal">| Master Control</span></h1>
-                <p className="text-[10px] uppercase tracking-widest text-gray-400">Auth: Admin | Ver: 2.1.0-alpha</p>
+                <h1 className="text-2xl font-black italic tracking-tighter uppercase italic">{APP_NAME} <span className="text-indigo-500">BI-Engine</span></h1>
+                <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-mono">Master Cluster Control | Prod_v2.1</p>
             </div>
         </div>
-        <div className="flex gap-4 text-xs font-mono">
-            <span className="flex items-center gap-1 text-green-400"><div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"/> SYSTEM_ONLINE</span>
+        <div className="flex items-center gap-8">
+            <div className="text-right hidden md:block">
+                <p className="text-[10px] uppercase text-gray-500 font-bold">Projected ARR (Year 2)</p>
+                <p className="text-xl font-black text-indigo-400 font-mono">$12,400,000</p>
+            </div>
+            <button onClick={() => setIsAuthenticated(false)} className="p-3 text-gray-500 hover:text-white transition-colors"><Lock className="w-5 h-5"/></button>
         </div>
       </div>
 
-      {/* Layout */}
-      <div className="flex flex-col md:flex-row min-h-[800px]">
-          
-          {/* Sidebar */}
-          <div className="w-full md:w-64 bg-gray-50 dark:bg-[#1a1a1a] border-r border-gray-200 dark:border-gray-800 p-4 space-y-2">
+      <div className="flex flex-col lg:flex-row min-h-[850px]">
+          <nav className="w-full lg:w-80 bg-gray-50 dark:bg-zinc-900/30 border-r border-gray-200 dark:border-white/5 p-8 space-y-3">
              {[
-                 { id: 'plan', label: 'Business Plan', icon: FileText },
-                 { id: 'roadmap', label: 'Strategic Roadmap', icon: Map },
-                 { id: 'features', label: 'Feature Backlog (50+)', icon: List },
-                 { id: 'competitors', label: 'Market Intel', icon: Globe },
-                 { id: 'notes', label: 'DevLog (Notes)', icon: Save },
-             ].map((tab) => (
-                 <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id as any)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all
-                        ${activeTab === tab.id ? 'bg-blue-600 text-white shadow-lg' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800'}
-                    `}
-                 >
-                     <tab.icon className="w-4 h-4" />
-                     {tab.label}
+                 { id: 'plan', label: 'Strategy', icon: Briefcase },
+                 { id: 'roadmap', label: 'Growth', icon: Map },
+                 { id: 'features', label: 'Backlog', icon: Code },
+                 { id: 'competitors', label: 'Intelligence', icon: BarChart3 },
+                 { id: 'notes', label: 'DevLog', icon: FileText },
+             ].map((t) => (
+                 <button key={t.id} onClick={() => setActiveTab(t.id as any)} className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-black transition-all ${activeTab === t.id ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-600/30' : 'text-gray-400 hover:bg-white dark:hover:bg-white/5'}`}>
+                    <t.icon className="w-5 h-5" /> {t.label}
                  </button>
              ))}
-          </div>
+          </nav>
 
-          {/* Main Content */}
-          <div className="flex-grow p-8 overflow-y-auto h-[800px]">
-              
-              {/* BUSINESS PLAN */}
+          <div className="flex-grow p-12 overflow-y-auto max-h-[850px]">
               {activeTab === 'plan' && (
-                  <div className="space-y-8 animate-fade-in max-w-3xl">
-                      <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
-                          <h2 className="text-3xl font-black mb-2">Executive Strategy 2026</h2>
-                          <p className="text-gray-500 uppercase tracking-widest text-xs font-bold">Confidential</p>
+                  <div className="space-y-12 animate-fade-in">
+                      <h2 className="text-5xl font-black tracking-tighter italic italic">The Blue Ocean Strategy</h2>
+                      <div className="grid md:grid-cols-3 gap-8">
+                         {[
+                             { label: 'CAC', val: '$42', sub: 'Target Acquisition' },
+                             { label: 'LTV', val: '$580', sub: '3-Year Lifetime' },
+                             { label: 'TAM', val: '$240B', sub: 'Neuro-Tech Sector' }
+                         ].map((s,i) => <div key={i} className="p-8 bg-gray-50 dark:bg-white/5 rounded-3xl border border-gray-100 dark:border-white/5"><p className="text-[10px] uppercase text-gray-500 font-bold mb-2">{s.label}</p><p className="text-4xl font-black text-indigo-500">{s.val}</p><p className="text-xs text-gray-400 font-medium">{s.sub}</p></div>)}
                       </div>
-                      
-                      <section className="space-y-3">
-                          <h3 className="text-xl font-bold flex items-center gap-2"><TrendingUp className="w-5 h-5 text-blue-500"/> Value Proposition</h3>
-                          <p className="leading-relaxed text-gray-600 dark:text-gray-300">
-                              {APP_NAME} targets the $13B Digital Health market by solving the "Action Gap" in ADHD. Unlike competitors who focus on *planning* (Motion) or *learning* (Inflow), we focus on *execution*. We act as an external pre-frontal cortex using Generative AI for real-time intervention.
-                          </p>
-                      </section>
-
-                      <div className="grid md:grid-cols-2 gap-6">
-                          <div className="p-6 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-                              <h4 className="font-bold mb-3">Monetization (B2C)</h4>
-                              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                                  <li>• Freemium: Core tools (Timer, basic chat).</li>
-                                  <li>• Pro ($12/mo): AI Visual Breakdown, Impulse Guard.</li>
-                                  <li>• Lifetime ($299): Founding Member status.</li>
-                              </ul>
-                          </div>
-                          <div className="p-6 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-                              <h4 className="font-bold mb-3">Monetization (B2B)</h4>
-                              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                                  <li>• Enterprise: Corporate neurodiversity packages.</li>
-                                  <li>• Clinical: Dashboard for therapists to track patient executive dysfunction patterns.</li>
-                              </ul>
-                          </div>
-                      </div>
-
-                      <section className="space-y-3">
-                          <h3 className="text-xl font-bold">Financial Projections</h3>
-                          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden flex text-xs font-bold text-white text-center leading-4">
-                             <div className="w-[10%] bg-blue-500">Q1</div>
-                             <div className="w-[20%] bg-blue-600">Q2</div>
-                             <div className="w-[30%] bg-blue-700">Q3</div>
-                             <div className="w-[40%] bg-blue-800">Q4 (Break Even)</div>
-                          </div>
-                          <p className="text-xs text-gray-500">Projected User Growth: 100k MAU by EOY.</p>
+                      <section className="space-y-4">
+                          <h3 className="text-2xl font-black flex items-center gap-3 italic italic"><TrendingUp className="w-6 h-6 text-indigo-500"/> Market Dominance</h3>
+                          <p className="text-lg text-gray-500 leading-relaxed font-medium">Most ADHD apps are "Planner Lite". We are a "Cognitive Prosthetic". By automating input through Gemini-3 Multimodal analysis, we remove the friction point that kills competitor retention. Our moat is <strong>Low-Activation-Energy UI</strong> coupled with <strong>Clinical-Grade Analytics</strong>.</p>
                       </section>
                   </div>
               )}
 
-              {/* ROADMAP */}
-              {activeTab === 'roadmap' && (
-                  <div className="space-y-8 animate-fade-in">
-                      <h2 className="text-3xl font-black mb-6">Strategic Roadmap</h2>
-                      <div className="space-y-0 border-l-2 border-gray-200 dark:border-gray-800 ml-4">
-                          {[
-                              { q: "Q1 2026", title: "Foundation & AI", items: ["Gemini 2.0 Integration", "Voice Input latency <200ms", "Basic Wearable Push"] },
-                              { q: "Q2 2026", title: "Community & Social", items: ["Body Doubling P2P Matching", "Gamification Leaderboards", "Family Sync"] },
-                              { q: "Q3 2026", title: "Ecosystem", items: ["Chrome Extension", "Desktop Native App", "Calendar Bi-directional Sync"] },
-                              { q: "Q4 2026", title: "The 'Cure' Era", items: ["Clinical Trials Partnership", "Predictive Burnout AI", "Hardware (Focus Dial)"] }
-                          ].map((phase, i) => (
-                              <div key={i} className="relative pl-8 pb-10">
-                                  <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-600 border-4 border-white dark:border-gray-900"></div>
-                                  <h3 className="text-xl font-bold">{phase.q}: {phase.title}</h3>
-                                  <ul className="mt-2 space-y-1">
-                                      {phase.items.map(item => <li key={item} className="text-gray-600 dark:text-gray-400 text-sm">• {item}</li>)}
-                                  </ul>
-                              </div>
-                          ))}
-                      </div>
-                  </div>
-              )}
-
-              {/* FEATURES */}
               {activeTab === 'features' && (
-                  <div className="animate-fade-in">
-                      <div className="flex justify-between items-end mb-6">
-                        <h2 className="text-3xl font-black">Feature Backlog</h2>
-                        <span className="text-sm font-bold bg-blue-100 dark:bg-blue-900 text-blue-600 px-3 py-1 rounded-full">Count: {featuresList.length}</span>
-                      </div>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                          {featuresList.map((f, i) => (
-                              <div key={i} className="p-3 bg-gray-50 dark:bg-gray-800 rounded border border-gray-100 dark:border-gray-700 text-xs font-medium hover:border-blue-500 transition-colors cursor-default">
-                                  {f}
-                              </div>
-                          ))}
+                  <div className="animate-fade-in space-y-8">
+                      <h2 className="text-5xl font-black tracking-tighter italic italic">Master Backlog</h2>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {features.map((f, i) => <div key={i} className="p-6 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center gap-3 hover:border-indigo-500 transition-all cursor-default"><div className="w-2 h-2 rounded-full bg-indigo-500"></div>{f}</div>)}
                       </div>
                   </div>
               )}
 
-              {/* COMPETITORS */}
               {activeTab === 'competitors' && (
-                  <div className="animate-fade-in">
-                      <h2 className="text-3xl font-black mb-6">Market Intelligence</h2>
-                      <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
+                  <div className="animate-fade-in space-y-10">
+                      <h2 className="text-5xl font-black tracking-tighter italic italic">Competitor Intelligence</h2>
+                      <div className="overflow-hidden rounded-[2rem] border border-gray-100 dark:border-white/5 shadow-xl">
                           <table className="w-full text-left">
-                              <thead className="bg-gray-100 dark:bg-gray-800 text-xs uppercase font-bold text-gray-500">
-                                  <tr>
-                                      <th className="p-4">Competitor</th>
-                                      <th className="p-4">Est. Revenue</th>
-                                      <th className="p-4">Critical Weakness</th>
-                                  </tr>
+                              <thead className="bg-gray-100 dark:bg-white/5 text-[10px] font-black uppercase tracking-widest text-gray-400">
+                                  <tr><th className="p-6">Competitor</th><th className="p-6">Est. Revenue (ARR)</th><th className="p-6">The Flaw</th></tr>
                               </thead>
-                              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                                  {competitors.map((c, i) => (
-                                      <tr key={i} className="bg-white dark:bg-[#151515]">
-                                          <td className="p-4 font-bold">{c.name}</td>
-                                          <td className="p-4 font-mono text-green-600 dark:text-green-400">{c.rev}</td>
-                                          <td className="p-4 text-red-500 text-sm">{c.weakness}</td>
-                                      </tr>
-                                  ))}
+                              <tbody className="divide-y divide-gray-100 dark:divide-white/5">
+                                  {[{ n: 'Motion', r: '$50M+', f: 'Price Friction ($30/mo)' }, { n: 'Tiimo', r: '$5M', f: 'High Manual Input' }, { n: 'Inflow', r: '$12M', f: 'CBT Only, No Tools' }].map((c, i) => <tr key={i} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"><td className="p-6 font-black text-lg">{c.n}</td><td className="p-6 font-mono text-green-500 font-bold">{c.r}</td><td className="p-6 text-red-500 font-black text-[10px] uppercase tracking-widest">{c.f}</td></tr>)}
                               </tbody>
                           </table>
                       </div>
-                      <div className="mt-8 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800">
-                          <h4 className="font-bold mb-2 flex items-center gap-2"><AlertTriangle className="w-4 h-4"/> Our Winning Edge</h4>
-                          <p className="text-sm text-gray-700 dark:text-gray-300">
-                              Competitors rely on the user to *input* data manually (high friction). 
-                              {APP_NAME} uses Multimodal AI (Image/Voice) to reduce input friction by 90%. 
-                              We don't ask "What did you do?", we see it and log it.
-                          </p>
-                      </div>
                   </div>
               )}
 
-              {/* DEVLOG (NOTES) */}
               {activeTab === 'notes' && (
-                  <div className="h-full flex flex-col animate-fade-in">
-                      <div className="flex justify-between items-center mb-4">
-                          <h2 className="text-3xl font-black">DevLog</h2>
-                          <button onClick={handleSaveNotes} className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:scale-105 transition-transform">
-                              <Save className="w-4 h-4" /> Sync
-                          </button>
+                  <div className="h-full flex flex-col animate-fade-in space-y-6">
+                      <div className="flex justify-between items-center">
+                          <h2 className="text-5xl font-black tracking-tighter italic italic">DevLog</h2>
+                          <button onClick={handleSave} className="bg-indigo-600 text-white px-8 py-3 rounded-2xl font-black flex items-center gap-3 hover:scale-105 transition-all shadow-xl shadow-indigo-600/30"><Save className="w-5 h-5"/> PERSIST_STATE</button>
                       </div>
-                      <div className="flex-grow relative">
-                          <textarea
-                              value={notes}
-                              onChange={(e) => setNotes(e.target.value)}
-                              placeholder="# Development Notes\n\n- [ ] Fix re-render issue on TaskBoard\n- [ ] Update Gemini API key\n- [ ] Design new 'Neon' theme assets..."
-                              className="w-full h-[600px] bg-yellow-50 dark:bg-[#1a1a1a] text-gray-800 dark:text-gray-300 font-mono p-8 rounded-xl border border-yellow-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400 dark:focus:ring-gray-600 resize-none shadow-inner leading-relaxed"
-                          />
-                          <div className="absolute top-4 right-6 text-xs text-gray-400 font-mono pointer-events-none">
-                              Markdown Supported
-                          </div>
-                      </div>
+                      <textarea
+                          value={notes}
+                          onChange={(e) => setNotes(e.target.value)}
+                          placeholder="# SYSTEM_LOG\n\n- [ ] Gemini-3-pro integration for Clinical Dashboard\n- [ ] Vagus Nerve vibration API for Apple Watch\n- [ ] Refactor state for local-first persistence..."
+                          className="w-full flex-grow bg-gray-50 dark:bg-white/5 text-gray-800 dark:text-indigo-100 font-mono p-10 rounded-[2.5rem] border-2 border-transparent focus:border-indigo-500/30 outline-none resize-none shadow-inner leading-loose text-lg"
+                      />
                   </div>
               )}
-
           </div>
       </div>
     </div>
